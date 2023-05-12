@@ -23,3 +23,4 @@ function Card(props: Props) {
         </div>
     );
 }
+export default Card;
