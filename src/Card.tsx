@@ -16,10 +16,10 @@ type Character = {
 function Card(props: Props) {
     return (
         <div>
-            <h1>Name: {props.character.name}</h1>
+            <h2>{props.character.name}</h2>
             <img src={props.character.image}/>
-            <p>Species: {props.character.species}</p>
-            <p>Status: {props.character.status}</p>
+            <p>species: {props.character.species}</p>
+            <p>status: {props.character.status}</p>
         </div>
     );
 }
