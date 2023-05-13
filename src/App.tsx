@@ -7,7 +7,10 @@ import Gallery from "./Gallery";
 function App() {
   return (
     <div className="App">
-      <Gallery/>
+        <header>
+            <h1>All Rick and Morty Characters</h1>
+        </header>
+        <Gallery/>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, {ChangeEvent, useState} from 'react';
 import Card from "./Card"
 import axios from "axios";
+import "./Gallery.css"
 
 type Props = {
     character:RickAndMortyCharacters[]
@@ -40,17 +41,19 @@ function Gallery() {
 
     return (
         <div>
-            <input type="text" onChange={useTextInput} value={inputFieldValue} placeholder="search character by name"/>
+            <div className="inputAndButton">
+                <input className="input" type="text" onChange={useTextInput} value={inputFieldValue} placeholder="search character by name"/>
 
-            <button onClick={() => {
-                getAllCharactersFromApi();
-                setShowCharacters(true);
-            }}>get all characters</button>
-            {showCharacters && characters.map(currentChar => <Card key={currentChar.name} character={currentChar}/>)}
-            {showFilteredCharacters && filteredByName.map(currentChar => <Card key={currentChar.name} character={currentChar}/>)}
+                <button className="buttonAllChar" onClick={() => {
+                    getAllCharactersFromApi();
+                    setShowCharacters(true);
+                }}>get all characters</button>
+            </div>
+            <div className="gallery">
+                {showCharacters && characters.map(currentChar => <Card key={currentChar.name} character={currentChar}/>)}
+                {showFilteredCharacters && filteredByName.map(currentChar => <Card key={currentChar.name} character={currentChar}/>)}
 
-
-
+            </div>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import "./Card.css"
 
 type Props = {
     character: Character
@@ -15,7 +15,7 @@ type Character = {
 
 function Card(props: Props) {
     return (
-        <div>
+        <div className="card">
             <h2>{props.character.name}</h2>
             <img src={props.character.image}/>
             <p>species: {props.character.species}</p>
