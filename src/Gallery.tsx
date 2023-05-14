@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import Card from "./Card"
 import axios from "axios";
 import "./Gallery.css"
@@ -16,18 +16,25 @@ type RickAndMortyCharacters = {
     origin: {name:string}
 }
 
+type Info = {
+    next:string,
+    prev:string
+}
+
 function Gallery() {
     const [characters, setCharacters] = useState<RickAndMortyCharacters[]>([])
     const [showCharacters, setShowCharacters] = useState(false)
     const [inputFieldValue, setInputFieldValue] = useState<string>("")
     const filteredByName = characters.filter((characters) => characters.name.toLowerCase().includes(inputFieldValue.toLowerCase()))
     const [showFilteredCharacters, setFilteredCharacters] = useState(false)
-
+    const [info, setInfo] = useState<Info>({next: "null", prev:"null"})
+    const [url, setUrl] = useState<string>("https://rickandmortyapi.com/api/character")
 
     function getAllCharactersFromApi() {
-        axios.get("https://rickandmortyapi.com/api/character")
+        axios.get(url)
             .then((response) => {
                 setCharacters(response.data.results);
+                setInfo(response.data.info);
                 })
     }
 
@@ -39,6 +46,14 @@ function Gallery() {
     }
 
 
+    function onClickSetUrlPrev() {
+        setUrl(info.prev)
+    }
+
+    function onClickSetUrlNext() {
+        setUrl(info.next)
+    }
+    useEffect(getAllCharactersFromApi, [url])
     return (
         <div>
             <div className="inputAndButton">
@@ -48,6 +63,9 @@ function Gallery() {
                     getAllCharactersFromApi();
                     setShowCharacters(true);
                 }}>get all characters</button>
+                <br/>
+                {info.prev === null ? <></> : <button onClick={onClickSetUrlPrev}>prev</button>}
+                {info.next === null ? <></> : <button onClick={onClickSetUrlNext}>next</button>}
             </div>
             <div className="gallery">
                 {showCharacters && characters.map(currentChar => <Card key={currentChar.name} character={currentChar}/>)}
