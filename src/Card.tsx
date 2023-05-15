@@ -5,7 +5,7 @@ type Props = {
     character: Character
 }
 
-type Character = {
+export type Character = {
     id: number
     name: string
     species: string

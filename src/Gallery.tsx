@@ -23,11 +23,11 @@ type Info = {
 
 function Gallery() {
     const [characters, setCharacters] = useState<RickAndMortyCharacters[]>([])
-    const [showCharacters, setShowCharacters] = useState(false)
+
     const [inputFieldValue, setInputFieldValue] = useState<string>("")
     const filteredByName = characters.filter((characters) => characters.name.toLowerCase().includes(inputFieldValue.toLowerCase()))
-    const [showFilteredCharacters, setFilteredCharacters] = useState(false)
-    const [info, setInfo] = useState<Info>({next: "null", prev:"null"})
+
+    const [info, setInfo] = useState<Info>({next: "", prev:""})
     const [url, setUrl] = useState<string>("https://rickandmortyapi.com/api/character")
 
     function getAllCharactersFromApi() {
@@ -40,9 +40,7 @@ function Gallery() {
 
     function useTextInput(event: ChangeEvent<HTMLInputElement>) {
         setInputFieldValue(event.target.value)
-        getAllCharactersFromApi();
-        setShowCharacters(false);
-        setFilteredCharacters(true);
+
     }
 
 
@@ -54,22 +52,20 @@ function Gallery() {
         setUrl(info.next)
     }
     useEffect(getAllCharactersFromApi, [url])
+
     return (
         <div>
             <div className="inputAndButton">
                 <input className="input" type="text" onChange={useTextInput} value={inputFieldValue} placeholder="search character by name"/>
 
-                <button className="buttonAllChar" onClick={() => {
-                    getAllCharactersFromApi();
-                    setShowCharacters(true);
-                }}>get all characters</button>
+                <button className="buttonAllChar">get all characters</button>
                 <br/>
                 {info.prev === null ? <></> : <button onClick={onClickSetUrlPrev}>prev</button>}
                 {info.next === null ? <></> : <button onClick={onClickSetUrlNext}>next</button>}
             </div>
             <div className="gallery">
-                {showCharacters && characters.map(currentChar => <Card key={currentChar.name} character={currentChar}/>)}
-                {showFilteredCharacters && filteredByName.map(currentChar => <Card key={currentChar.name} character={currentChar}/>)}
+
+                {filteredByName.map(currentChar => <Card key={currentChar.name} character={currentChar}/>)}
 
             </div>
         </div>
