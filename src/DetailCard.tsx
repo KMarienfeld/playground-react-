@@ -17,7 +17,8 @@ function DetailCard(props:Props) {
         <div>
             <h1>Die Details von: {foundCard?.name}</h1>
             <h2>{foundCard?.status}</h2>
-            <h2>{foundCard?.image}</h2>
+            <img src={foundCard?.image}/>
+            <br/>
             <Link to={"/"}>back</Link>
         </div>
     );

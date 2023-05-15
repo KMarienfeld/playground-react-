@@ -1,10 +1,16 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import Card from "./Card"
-import axios from "axios";
 import "./Gallery.css"
+import {Info} from "./useCharacters";
 
 type Props = {
-    character:RickAndMortyCharacters[]
+    characters:RickAndMortyCharacters[],
+    info: Info,
+    onClickSetUrlNext: ()=> void
+    onClickSetUrlPrev: ()=> void
+    getAllCharactersFromApi: ()=> void
+
+
 }
 
 type RickAndMortyCharacters = {
@@ -13,45 +19,21 @@ type RickAndMortyCharacters = {
     species:string
     image:string
     status:string
-    origin: {name:string}
+
 }
 
-type Info = {
-    next:string,
-    prev:string
-}
 
-function Gallery() {
-    const [characters, setCharacters] = useState<RickAndMortyCharacters[]>([])
+
+function Gallery(props:Props) {
 
     const [inputFieldValue, setInputFieldValue] = useState<string>("")
-    const filteredByName = characters.filter((characters) => characters.name.toLowerCase().includes(inputFieldValue.toLowerCase()))
+    const filteredByName = props.characters.filter((characters) => characters.name.toLowerCase().includes(inputFieldValue.toLowerCase()))
 
-    const [info, setInfo] = useState<Info>({next: "", prev:""})
-    const [url, setUrl] = useState<string>("https://rickandmortyapi.com/api/character")
-
-    function getAllCharactersFromApi() {
-        axios.get(url)
-            .then((response) => {
-                setCharacters(response.data.results);
-                setInfo(response.data.info);
-                })
-    }
 
     function useTextInput(event: ChangeEvent<HTMLInputElement>) {
         setInputFieldValue(event.target.value)
 
     }
-
-
-    function onClickSetUrlPrev() {
-        setUrl(info.prev)
-    }
-
-    function onClickSetUrlNext() {
-        setUrl(info.next)
-    }
-    useEffect(getAllCharactersFromApi, [url])
 
     return (
         <div>
@@ -60,12 +42,12 @@ function Gallery() {
 
                 <button className="buttonAllChar">get all characters</button>
                 <br/>
-                {info.prev === null ? <></> : <button onClick={onClickSetUrlPrev}>prev</button>}
-                {info.next === null ? <></> : <button onClick={onClickSetUrlNext}>next</button>}
+                {props.info.prev === null ? <></> : <button onClick={props.onClickSetUrlPrev}>prev</button>}
+                {props.info.next === null ? <></> : <button onClick={props.onClickSetUrlNext}>next</button>}
             </div>
             <div className="gallery">
 
-                {filteredByName.map(currentChar => <Card key={currentChar.name} character={currentChar}/>)}
+                {filteredByName.map(currentChar => <Card key={currentChar.id} character={currentChar}/>)}
 
             </div>
         </div>
